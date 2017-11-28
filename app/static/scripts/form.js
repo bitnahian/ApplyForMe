@@ -4,10 +4,11 @@ $(document).ready(function() {
     $.getJSON('/process', {
 				  keywords: $('#input').val(),
 				}, function(data) {
+					var myJSON = JSON.stringify(data);
           if (data.error) {
-    				$('#result').html(data.error);
+    				$('#result').html(myJSON.error);
     			} else {
-    				$('#result').html(data);
+    				$('#result').html(myJSON);
     			}
 				});
         return false;

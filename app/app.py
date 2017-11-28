@@ -38,9 +38,8 @@ def process():
         #    ))
         #print('\n\n')
         response['title'].append(title)
-        response['description'].append(title)
+        response['description'].append(description)
 
-    print(response)
     return jsonify(response)
 
 
