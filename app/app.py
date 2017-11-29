@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Markup, request, jsonify
+from auth import LoginForm
 import requests
 import xml.etree.ElementTree as ET
 
@@ -6,11 +7,24 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index/index.html')
+
+@app.route('/login')
+def login():
+    header = "user", "password"
+    data = "user", "password"
+    r = requests.post('https://www.freelancer.com/api/users/0.1/users/check/',
+          data={"user": "password"},
+          header={'key': 'value'})
+    print(r)
+    # print(r)
+    # form = LoginForm()
+    # error = None
+    return render_template('auth/login.html')
 
 @app.route('/form')
 def form():
-    return render_template('form.html')
+    return render_template('form/form.html')
 
 @app.route('/process')
 def process():
