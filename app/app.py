@@ -25,23 +25,21 @@ def process():
     keywords.replace(" ", "")
     payload['keywords'] = keywords
     payload['page'] = page
-
     url='https://authenticjobs.com/api/'
-
+    # Send request to API
     r = requests.get(url, params=payload)
+    # Get the root using Element Tree
     root = ET.fromstring(r.content)
+    # Response variable for storing desired output
     response = {'title' : [], 'description' : [], 'url' : []}
     for listing in root.iter('listing'):
         title = listing.get('title')
         description = listing.get('description')
         url = listing.find('company').get('url')
-        #print(' * {} {}'.format(
-        #    title, description
-        #    ))
-        #print('\n\n')
         response['title'].append(title)
         response['description'].append(description)
         response['url'].append(url)
+
     return jsonify(response)
 
 

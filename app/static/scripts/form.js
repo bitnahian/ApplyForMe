@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+		var updatePage = function($data) {
+			var html = ''
+			for(var i = 0; i < data.title.length; ++i){
+					html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
+			}
+			$('#result').html(html);
+		}
+
 		$('form').on('submit', function(event) {
     $.getJSON('/process', {
 				  keywords: $('#input').val(),
@@ -10,12 +18,7 @@ $(document).ready(function() {
     			} else {
 						$('#next').show();
 						$('#prev').show();
-						var html = ''
-						for(var i = 0; i < data.title.length; ++i){
-							  //html +=  "<h1><a href='"+ data.url[i] "'/>" + data.title[i] + "</h1> " +  data.description[i] + "</br>";
-								html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
-						}
-    				$('#result').html(html);
+						updatePage(data);
 						$('#page').html(1);
     			}
 				});
@@ -33,14 +36,9 @@ $(document).ready(function() {
 		          if (data.error) {
 		    				$('#result').html(data.error);
 		    			} else {
-								var html = ''
-								for(var i = 0; i < data.title.length; ++i){
-								    //html +=  "<h1><a href='"+ data.url[i] "'>" + data.title[i] + "</h1> " +  data.description[i] + "</br>";
-										html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
-								}
-		    			$('#result').html(html);
-							$('#page').html(page);
-		    		}
+								updatePage(data);
+								$('#page').html(page);
+		    			}
 					});
 		      return false;
 				});
@@ -49,19 +47,14 @@ $(document).ready(function() {
 					var pageStr = $('#page').text();
 					var page = parseInt(pageStr) - 1;
 					console.log(page);
-			    $.getJSON('/process', {
+					$.getJSON('/process', {
 							  keywords: $('#input').val(),
 								page : page
 							}, function(data) {
 			          if (data.error) {
 			    				$('#result').html(data.error);
+									updatePage(data);
 			    			} else {
-									var html = ''
-									for(var i = 0; i < data.title.length; ++i){
-									    //html +=  "<h1><a href='"+ data.url[i] "'>" + data.title[i] + "</h1> " +  data.description[i] + "</br>";
-											html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
-									}
-			    				$('#result').html(html);
 									$('#page').html(page);
 			    			}
 							});
