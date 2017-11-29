@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html>
-    <body class = 'home'>
-        <h1> My Personal Website </h1>
-        <strong><nav>
-                <ul class='menu'>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                </ul>
-            </nav></strong>
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+        
+{% block content %}
         <h1> Welcome to Flask App </h1>
 
-    </body>
-</html>
+{% endblock %}
