@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <div class = 'about' >
-            <h1> About me </h1>
-            <strong><nav>
-                <ul class='menu'>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('about') }}">About</a></li>
-                </ul>
-            </nav></strong>
+{% extends "base.html" %}
 
-            <p> This is a portfolio site about anything that can be put in a portfolio </p>
+{% block content %}
+        <div class = 'about' >
+            <h1> About</h1>
+            <p> This is a portfolio site about anything that can be put in a portfolio</p>
 
         </div>
-    </body>
-</html>
 
+{% endblock %}
