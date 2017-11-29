@@ -1,0 +1,31 @@
+<!--This file is the base template -->
+<!DOCTYPE html>
+    <html lang="en">
+    <body>
+    
+    {% block content %}
+    <nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo"><strong>ApplyForMe</strong></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down">
+      <li><a href="{{ url_for('home') }}">Home</a></li>
+      <li><a href="{{ url_for('about') }}">About</a></li>
+      <li><a href="{{url_for('form')}}">Form</a></li>
+        {% if session.firstname %}
+            <li><a href="#">Log Out</a></li>
+        {% else %}
+        <li><a href="{{url_for('login')}}">Log In</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+        
+
+
+    {% endblock %}
+    
+   
+    
+    </body>
+    </html>
+  
