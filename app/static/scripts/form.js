@@ -1,11 +1,16 @@
 $(document).ready(function() {
-
-		var updatePage = function($data) {
+		var updatePage = function(data) {
 			var html = ''
+			html += '<ul class="collapsible" data-collapsible="accordion">'
+
 			for(var i = 0; i < data.title.length; ++i){
-					html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
+			 		 html += '<li><div class="collapsible-header"> {1}  </div> <div class="collapsible-body"> <span> <a href = "{0}"> {3} </p> </a> {2} <p> <a href ="https://authenticjobs.com/jobs/{4}"> APPLY HERE </a> </p> </span> </div>  </li>'.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
 			}
+			html += '</ul>'
+			
 			$('#result').html(html);
+			$('.collapsible').collapsible();
+
 		}
 
 		$('form').on('submit', function(event) {
@@ -13,8 +18,8 @@ $(document).ready(function() {
 				  keywords: $('#input').val(),
 					page: 1
 				}, function(data) {
-          if (data.error) {
-    				$('#result').html(data.error);
+          if (data.title.length == 0) {
+    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
     			} else {
 						$('#next').show();
 						$('#prev').show();
@@ -33,8 +38,8 @@ $(document).ready(function() {
 						  keywords: $('#input').val(),
 							page : page
 						}, function(data) {
-		          if (data.error) {
-		    				$('#result').html(data.error);
+							if (data.title.length == 0) {
+		    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
 		    			} else {
 								updatePage(data);
 								$('#page').html(page);
@@ -51,10 +56,10 @@ $(document).ready(function() {
 							  keywords: $('#input').val(),
 								page : page
 							}, function(data) {
-			          if (data.error) {
-			    				$('#result').html(data.error);
-									updatePage(data);
+								if (data.title.length == 0) {
+			    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
 			    			} else {
+									updatePage(data);
 									$('#page').html(page);
 			    			}
 							});

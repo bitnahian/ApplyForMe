@@ -11,16 +11,8 @@ def home():
 
 @app.route('/login')
 def login():
-    header = "user", "password"
-    data = "user", "password"
-    r = requests.post('https://www.freelancer.com/api/users/0.1/users/check/',
-          data={"user": "password"},
-          header={'key': 'value'})
-    print(r)
-    # print(r)
-    # form = LoginForm()
-    # error = None
-    return render_template('auth/login.html')
+    #form = LoginForm()
+    return render_template('auth/login.html', form=form)
 
 @app.route('/form')
 def form():
@@ -45,14 +37,19 @@ def process():
     # Get the root using Element Tree
     root = ET.fromstring(r.content)
     # Response variable for storing desired output
-    response = {'title' : [], 'description' : [], 'url' : []}
+    response = {'title' : [], 'description' : [], 'id' : [], 'name': [], 'url' : []}
     for listing in root.iter('listing'):
+        job_id = listing.get('id')
         title = listing.get('title')
         description = listing.get('description')
-        url = listing.find('company').get('url')
+        company = listing.find('company')
+        url = company.get('url')
+        name = company.get('name')
         response['title'].append(title)
         response['description'].append(description)
         response['url'].append(url)
+        response['name'].append(name)
+        response['id'].append(job_id)
 
     return jsonify(response)
 
