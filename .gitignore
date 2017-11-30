@@ -1,4 +1,4 @@
 app/venv
-app/__pycache__
-app/.vscode
+app/__pycache__/*
+app/.vscode/*
 .DS_Store

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, Markup, request, jsonify
-from auth import LoginForm
+from auth import *
 import requests
 import xml.etree.ElementTree as ET
 
@@ -9,10 +9,20 @@ app = Flask(__name__)
 def home():
     return render_template('index/index.html')
 
-@app.route('/login')
+@app.route('/login', methods = ['POST', 'GET'])
 def login():
-    #form = LoginForm()
+    form = LoginForm(request.form)
+    if request.method == 'POST' and form.validate():
+        email = request.form['email']
+        session['username'] = { 'email' : email , 'cart' : [0] }
+        print(email)
+        return redirect('form/form.html')
     return render_template('auth/login.html', form=form)
+
+@app.route('/logout')
+def logout():
+    session.pop('username', None)
+    return redirect('index/index.html')
 
 @app.route('/form')
 def form():
