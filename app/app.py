@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 
 app = Flask(__name__)
 
+@app.route('/index')
 @app.route('/')
 def home():
     return render_template('index/index.html')
@@ -18,6 +19,10 @@ def login():
 def form():
     return render_template('form/form.html')
 
+@app.route('/confirmation')
+def confirmation():
+    return render_template('confirmation/confirmation.html')
+    
 @app.route('/process')
 def process():
     # Construct API params
@@ -56,7 +61,7 @@ def process():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about/about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
