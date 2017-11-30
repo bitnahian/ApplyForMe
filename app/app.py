@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify
+from flask import Flask, render_template, Markup, request, jsonify, session
 from auth import LoginForm
 import requests
 import xml.etree.ElementTree as ET
@@ -11,11 +11,13 @@ def home():
 
 @app.route('/login')
 def login():
+    session['nahian'] = { 'user' : 'nahian', 'cart' : [0]}
     #form = LoginForm()
     return render_template('auth/login.html', form=form)
 
 @app.route('/form')
 def form():
+    session['nahian'] = dict
     return render_template('form/form.html')
 
 @app.route('/process')
@@ -52,6 +54,10 @@ def process():
         response['id'].append(job_id)
 
     return jsonify(response)
+
+@app.route('/add')
+def add():
+    session['nahian'].cart
 
 
 @app.route('/about')
