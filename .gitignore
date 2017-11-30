@@ -1,2 +1,4 @@
 app/venv
-__pycache__
+app/__pycache__
+app/.vscode
+.DS_Store

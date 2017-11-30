@@ -1,11 +1,16 @@
 $(document).ready(function() {
-
 		var updatePage = function(data) {
 			var html = ''
+			html += '<ul class="collapsible" data-collapsible="accordion">'
+
 			for(var i = 0; i < data.title.length; ++i){
-					html += '<h1> {1} </h1> <p> <a href = "{0}"> {3} </p> </a> {2} </br> <p> <a href ="https://authenticjobs.com/jobs/{4}"> APPLY HERE </a> </p> <hr>'.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
+			 		 html += '<li><div class="collapsible-header"> {1}  </div> <div class="collapsible-body"> <span> <a href = "{0}"> {3} </p> </a> {2} <p> <a href ="https://authenticjobs.com/jobs/{4}"> APPLY HERE </a> </p> </span> </div>  </li>'.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
 			}
+			html += '</ul>'
+			
 			$('#result').html(html);
+			$('.collapsible').collapsible();
+
 		}
 
 		$('form').on('submit', function(event) {
