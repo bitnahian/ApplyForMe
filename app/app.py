@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify, flash
+from flask import Flask, render_template, Markup, request, jsonify, flash, redirect
 from auth import *
 import requests
 import xml.etree.ElementTree as ET
@@ -67,6 +67,23 @@ def process():
         response['id'].append(job_id)
 
     return jsonify(response)
+
+# Users who hit this endpoint will be redirected to the authorisation prompt
+@app.route('/authorize')
+def handle_authorize():
+    return redirect(
+        '{0}?response_type=code'
+        '&client_id={1}&redirect_uri={2}'
+        '&scope=basic&prompt={3}'
+        '&advanced_scopes={4}'.format(
+            oauth_uri, client_id, redirect_uri, prompt, advanced_scopes
+        )
+    )
+
+# The endpoint waiting to receive the authorisation grant code
+@app.route('/redirect_endpoint')
+def handle_redirect():
+    authorisation_code = request.args['code']
 
 
 @app.route('/about')
