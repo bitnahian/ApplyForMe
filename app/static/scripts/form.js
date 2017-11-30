@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-		var updatePage = function($data) {
+		var updatePage = function(data) {
 			var html = ''
 			for(var i = 0; i < data.title.length; ++i){
 					html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
