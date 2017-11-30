@@ -18,6 +18,7 @@ $(document).ready(function() {
     			} else {
 						$('#next').show();
 						$('#prev').show();
+						$('#add').show();
 						updatePage(data);
 						$('#page').html(1);
     			}
