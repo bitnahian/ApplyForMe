@@ -1,27 +1,32 @@
 {% extends "base.html" %}
 
 {% block title %}Login{% endblock %}
-        
+
 {% block content %}
-        
+
         <div class="container center-align give-margin">
-            
+
             <h5 class="indigo-text">Connect to your Freelancer Account</h5>
-              
+
             <div class="custom-box z-depth-1 grey lighten-4 row left-align">
-    
+            {% for message in form.email.errors %}
+            <div>{{ message }}</div>
+            {% endfor %}
+            {% for message in form.password.errors %}
+            <div>{{ message }}</div>
+            {% endfor %}
                 <form class="col s12" method="post" action="{{ url_for('login') }}" role="form">
-    
-                    
+                {{ form.hidden_tag() }}
                     <div class='row'>
                         <div class='input-field col s12'>
-                        <input placeholder="Username" id="username" type="text" class="validate">
-                       
+                          {{ form.email.label(class_="active") }}
+                          {{ form.email(placeholder= "email", id="username", type="text", class_="validate") }}
+                          <input >
                       </div>
                     </div>
 
                     <div class='row'>
-                        <div class='input-field col s12'>          
+                        <div class='input-field col s12'>
                         <input placeholder="Password" id="pass" type="password" class="validate">
 
                         </div>
@@ -29,25 +34,25 @@
         				    <a class='pink-text' href='#!'><b>Forgot Password?</b></a>
         				</label>
                     </div>
-    
+
                   <br />
-             
+
                  <div class="row center">
                       <button class="btn waves-effect waves-light" type="submit" name="login_button">Login
                         <i class="material-icons right">send</i>
                       </button>
                   </div>
-              
+
                 </form>
-          
+
             </div>
 
             {%if error %}
                 <div class="errors">{{ error }}</div>
             {% endif %}
-            
-            
-        
+
+
+
         </div>
 
 

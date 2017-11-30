@@ -1,9 +1,8 @@
-from flask import Flask, render_template, Markup, request, jsonify
+from flask import Flask, render_template, Markup, request, jsonify, flash
 from auth import *
 import requests
 import xml.etree.ElementTree as ET
-
-app = Flask(__name__)
+from flask_wtf.csrf import CSRFProtect
 
 @app.route('/')
 def home():
@@ -12,12 +11,18 @@ def home():
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        email = request.form['email']
-        session['username'] = { 'email' : email , 'cart' : [0] }
-        print(email)
-        return redirect('form/form.html')
-    return render_template('auth/login.html', form=form)
+    if request.method == 'POST':
+        if form.validate() == False:
+            flash('All fields are required.')
+            return render_template('auth/login.html', form=form)
+        else:
+            email = request.form['email']
+            password = request.form
+            session['username'] = { 'email' : email , 'cart' : [0] }
+            print(email)
+            return redirect('form/form.html')
+    elif request.method == 'GET':
+        return render_template('auth/login.html', form=form)
 
 @app.route('/logout')
 def logout():
@@ -66,7 +71,7 @@ def process():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    return render_template('about/about.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
