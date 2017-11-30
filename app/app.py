@@ -11,16 +11,8 @@ def home():
 
 @app.route('/login')
 def login():
-    header = "user", "password"
-    data = "user", "password"
-    r = requests.post('https://www.freelancer.com/api/users/0.1/users/check/',
-          data={"user": "password"},
-          header={'key': 'value'})
-    print(r)
-    # print(r)
-    # form = LoginForm()
-    # error = None
-    return render_template('auth/login.html')
+    #form = LoginForm()
+    return render_template('auth/login.html', form=form)
 
 @app.route('/form')
 def form():
