@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-		var updatePage = function($data) {
+		var updatePage = function(data) {
 			var html = ''
 			for(var i = 0; i < data.title.length; ++i){
-					html += '<h1> <a href = "{0}"> {1} </a> </h1> {2} <hr>'.format(data.url[i], data.title[i], data.description[i]);
+					html += '<h1> {1} </h1> <p> <a href = "{0}"> {3} </p> </a> {2} </br> <p> <a href ="https://authenticjobs.com/jobs/{4}"> APPLY HERE </a> </p> <hr>'.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
 			}
 			$('#result').html(html);
 		}
@@ -13,8 +13,8 @@ $(document).ready(function() {
 				  keywords: $('#input').val(),
 					page: 1
 				}, function(data) {
-          if (data.error) {
-    				$('#result').html(data.error);
+          if (data.title.length == 0) {
+    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
     			} else {
 						$('#next').show();
 						$('#prev').show();
@@ -33,8 +33,8 @@ $(document).ready(function() {
 						  keywords: $('#input').val(),
 							page : page
 						}, function(data) {
-		          if (data.error) {
-		    				$('#result').html(data.error);
+							if (data.title.length == 0) {
+		    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
 		    			} else {
 								updatePage(data);
 								$('#page').html(page);
@@ -51,10 +51,10 @@ $(document).ready(function() {
 							  keywords: $('#input').val(),
 								page : page
 							}, function(data) {
-			          if (data.error) {
-			    				$('#result').html(data.error);
-									updatePage(data);
+								if (data.title.length == 0) {
+			    				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
 			    			} else {
+									updatePage(data);
 									$('#page').html(page);
 			    			}
 							});
