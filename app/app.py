@@ -11,19 +11,22 @@ def home():
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    form = LoginForm(request.form)
-    if request.method == 'POST':
-        if form.validate() == False:
-            flash('All fields are required.')
+    if 'username' in session and session['username'] is not None:
+        form = LoginForm(request.form)
+        if request.method == 'POST':
+            if form.validate() == False:
+                flash('All fields are required.')
+                return render_template('auth/login.html', form=form)
+            else:
+                title = request.form['title']
+                description = request.form['description']
+                link = request.form['link']
+                #add to cart HERE asldkjasldasdjlk
+                return redirect('confirmation/confirmation.html')
+        elif request.method == 'GET':
             return render_template('auth/login.html', form=form)
-        else:
-            email = request.form['email']
-            password = request.form
-            session['username'] = { 'email' : email , 'cart' : [0] }
-            print(email)
-            return redirect('form/form.html')
-    elif request.method == 'GET':
-        return render_template('auth/login.html', form=form)
+    else:
+        return redirect(url_for('handle_authorize'))
 
 @app.route('/logout')
 def logout():
@@ -50,7 +53,8 @@ def add_cart(dataID):
 
 @app.route('/confirmation')
 def confirmation():
-    cart = [ 'A', 'B', 'C' ]
+    cart = [ 'Fix my PHP website.', 'B', 'C' ]
+    job_ids = get_job_id()
     return render_template('confirmation/confirmation.html', cart = cart )
 
 @app.route('/process')
@@ -114,14 +118,62 @@ def handle_redirect():
         username = response['result']['username']
         session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : [0], 'username' : username }
         return render_template('form/form.html')
-#    else:
-#        flash("Authorization unsuccessful. Please authorize with correct information.")
-#        return redirect(url_for('handle_authorize'))
-
+    else:
+        flash("Authorization unsuccessful. Please authorize with correct information.")
+        return redirect(url_for('handle_authorize'))
 
 @app.route('/about')
 def about():
     return render_template('about/about.html')
 
+@app.route('/submit_jobs')
+def submit_jobs():
+    # Get the params
+    titles = ["Fix Nahian 1", "Fix Shenin 2", "Fix Ali 3"]
+    descriptions = ["test pls", "test pls", "test pls"]
+    job_ids = get_job_id()
+    budgets = json.loads(request.args.get('budgets'))
+    print(budgets)
+    url = "https://www.freelancer-sandbox.com/api/projects/0.1/projects/"
+    oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+
+    budget_len = len(budgets)
+    for i in range (0, budget_len):
+        if budgets[i] == -1:
+            continue
+        # Else do the API call
+        data = {
+        "title": titles[i],
+        "description": descriptions[i],
+        "currency": {
+            "code": "AUD",
+            "id": 3,
+            "sign": "$"
+            },
+        "budget": {
+                "minimum": budgets[i]
+            },
+        "jobs": job_ids
+        }
+        resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
+        response = json.loads(resp.text)
+        print(jsonify(response))
+
+    # REMEMBER TO POP CART SESSION
+    return json.dumps({"status" : "success", "message":"Application was successful."})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+def get_job_id():
+    url = "https://www.freelancer-sandbox.com/api/projects/0.1/jobs"
+    oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+    job_names = ["resumes" , "communications", "writing", "proofreading", "speechwriting"]
+    payload = {"job_names[]" : job_names}
+    resp = requests.get(url, headers=oauth_headers, params=payload)
+    response = json.loads(resp.text)
+    job_ids = []
+    for item in response['result']:
+        job_ids.append({'id' : item['id']})
+    return job_ids

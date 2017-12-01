@@ -1,5 +1,5 @@
 from flask_wtf import Form, FlaskForm
-from wtforms import validators, StringField, PasswordField
+from wtforms import validators, StringField, PasswordField, TextField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email, InputRequired
 from flask import Flask, session, redirect, url_for, escape, request
@@ -20,5 +20,6 @@ advanced_scopes = '1 2 3 4 5 6'
 
 #LoginForm is inheriting from the Form class
 class LoginForm(FlaskForm):
-    email = EmailField('Enter your email', validators=[InputRequired('An email is required'), Email(), validators.Length(min=3, max=50)])
-    password = PasswordField('Enter your password', validators=[InputRequired('A password is required'), validators.Length(min=4, max=80)])
+    title = TextField('Title', validators=[InputRequired('Title Required'), validators.Length(min=5, max=50)])
+    description = TextField('Description', validators=[InputRequired('Description Required'), validators.Length(min=5, max=80)])
+    link = TextField('Link', validators=[InputRequired('Link for Application Portal'), validators.Length(min=3, max=150)])
