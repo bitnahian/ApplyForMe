@@ -8,7 +8,7 @@ $(document).ready(function() {
 			var str = '<li><div class="collapsible-header"> <strong>{1}</strong>  ' +
 			'</div> <div class="collapsible-body"> <span class="browser-default"> ' +
 			'<h2 class="center-align"><a href = "{0}"> {3} </p> </a></h2> {2}<br> ' +
-			'<p class="center-align"><a id="addToList" class="waves-effect waves-light btn"><i class="material-icons left">add_circle</i>Add Job</a> </p> </span> </div> </li>';
+			'<p class="center-align"><a id="button{4}" class="addToList waves-effect waves-light btn"><i class="material-icons left">add_circle</i>Add Job</a> </p> </span> </div> </li>';
 
 			html += str.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
 		}
@@ -89,7 +89,9 @@ String.prototype.format = function () {
 
 
 var initialise = function intialise() {
-	$("#addToList").on("click", function(){
-    alert("test")
+	$(".addToList").on("click", function(){
+		var name = $(this).attr('id');
+		$(this).text("Remove Job");
+		console.log(name);
 });
 }
