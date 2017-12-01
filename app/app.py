@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify, flash, redirect
+from flask import Flask, render_template, Markup, request, jsonify, flash, redirect, url_for
 from auth import *
 import requests
 import xml.etree.ElementTree as ET
@@ -102,12 +102,13 @@ def handle_authorize():
 # The endpoint waiting to receive the authorisation grant code
 @app.route('/redirect_endpoint')
 def handle_redirect():
-    if 'code' in request.args == True:
-        authorisation_code = request.args['code']
-        session['logged in'] = { 'auth' : authorisation_code , 'cart' : [0] }
-        render_template('form/form.html')
-    flash("Authorization unsuccessful. Please authorize with correct information.")
-    return redirect(url_for('handle_authorize'))
+#    if 'code' in request.args == True:
+    authorisation_code = request.args['code']
+    session['logged in'] = { 'auth' : authorisation_code , 'cart' : [0] }
+    return render_template('form/form.html')
+#    else:
+#        flash("Authorization unsuccessful. Please authorize with correct information.")
+#        return redirect(url_for('handle_authorize'))
 
 
 @app.route('/about')

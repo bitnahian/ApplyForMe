@@ -10,10 +10,10 @@ app = Flask(__name__)
 app.secret_key = SECRET_KEY
 csrf = CSRFProtect(app)
 
-oauth_uri = 'https://accounts.freelancer.com/oauth/authorise'
-client_id = 'e424e640-07df-46f1-b7dd-4fb6169645d5'
-client_secret = '787688150ca8b033b881d715280eb06c2daffc5d3e692459ca19539351a5f89bff4a45b43aaadf58f8c91003eb989c9badb10cf6571c39e76f7709f9952653cc'
-redirect_uri = 'https://localhost:5000/redirect_endpoint'
+oauth_uri = 'https://accounts.freelancer-sandbox.com/oauth/authorise'
+client_id = '96ae59dd-a8dd-49af-919b-167a6327a902'
+client_secret = '1140823b3e4289a9e0b5cd6c76e63e9d0575b8753448aa99f80e3aad43009e1bfd911f07953041ff83d9a6b4cc845b8d18eece3f2f0e47e78bc187d06abd39f8'
+redirect_uri = 'http://localhost:5000/redirect_endpoint'
 prompt = 'select_account consent'
 advanced_scopes = '1 2 3 4 5 6'
 
