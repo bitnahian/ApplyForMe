@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify, flash, redirect, url_for
+from flask import Flask, render_template, Markup, request, jsonify, flash, redirect, url_for, json
 from auth import *
 import requests
 import xml.etree.ElementTree as ET
@@ -28,29 +28,30 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return redirect('index/index.html')
+    return render_template('index/index.html')
 
 @app.route('/form')
 def form():
-    if 'logged in' in session:
+    if 'username' in session and session['username'] is not None:
         return render_template('form/form.html')
     else:
         return redirect(url_for('handle_authorize'))
 
 @app.route('/add_cart/<int:dataID>', methods=['POST', 'GET'])
 def add_cart(dataID):
-    if 'logged in' in session:
-        session['logged in']['cart'].append(dataID)
+    if 'username' in session and session['username'] is not None:
+        session['username']['cart'].append(dataID)
         print(session)
         return render_template('form/form.html', session=session)
 
-    else: 
+    else:
         return redirect(url_for('handle_authorize'))
 
 
 @app.route('/confirmation')
 def confirmation():
-    return render_template('confirmation/confirmation.html')
+    cart = [ 'A', 'B', 'C' ]
+    return render_template('confirmation/confirmation.html', cart = cart )
 
 @app.route('/process')
 def process():
@@ -104,8 +105,15 @@ def handle_authorize():
 def handle_redirect():
 #    if 'code' in request.args == True:
     authorisation_code = request.args['code']
-    session['logged in'] = { 'auth' : authorisation_code , 'cart' : [0] }
-    return render_template('form/form.html')
+    url = "https://www.freelancer-sandbox.com/api/users/0.1/self/"
+    oauth_headers = {"Freelancer-OAuth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9", "display_info" : "True"}
+    resp = requests.get(url, headers=oauth_headers)
+    response = json.loads(resp.text)
+
+    if response['status'] == "success":
+        username = response['result']['username']
+        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : [0], 'username' : username }
+        return render_template('form/form.html')
 #    else:
 #        flash("Authorization unsuccessful. Please authorize with correct information.")
 #        return redirect(url_for('handle_authorize'))
