@@ -27,12 +27,12 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return redirect('index/index.html')
+    session.pop('logged in', None)
+    return render_template('index/index.html')
 
 @app.route('/form')
 def form():
-    if 'logged in' in session:
+    if session['logged in']:
         return render_template('form/form.html')
     else:
         return redirect(url_for('handle_authorize'))
@@ -40,7 +40,8 @@ def form():
 
 @app.route('/confirmation')
 def confirmation():
-    return render_template('confirmation/confirmation.html')
+    cart = [ 'A', 'B', 'C' ]
+    return render_template('confirmation/confirmation.html', cart = cart )
 
 @app.route('/process')
 def process():

@@ -14,19 +14,17 @@
       <li><a href="{{url_for('form')}}"><strong>Form</strong></a></li>
       <li><a href="{{url_for('confirmation')}}"><strong>Submit Job</strong></a></li>
 
-        {% if session.firstname %}
-            <li><a href="#"><strong>Log Out</strong></a></li>
-        {% else %}
-        <li><a href="{{url_for('login')}}"><strong>Log In</strong></a></li>
+        {% if session['logged in']  %}
+            <li><a href="{{ url_for('logout')}}"><strong>Log Out</strong></a></li>
         {% endif %}
       </ul>
         <ul class="side-nav" id="mobile-demo">
          <li><a href="{{ url_for('home') }}">Home</a></li>
       <li><a href="{{ url_for('about') }}">About</a></li>
       <li><a href="{{url_for('form')}}">Form</a></li>
-            <li><a href="{{url_for('confirmation')}}">Submit Job</a></li>
 
         {% if session.firstname %}
+            <li><a href="{{url_for('confirmation')}}">Submit Job</a></li>
             <li><a href="#">Log Out</a></li>
         {% else %}
         <li><a href="{{url_for('login')}}">Log In</a></li>

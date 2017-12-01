@@ -1,4 +1,4 @@
-{% extends "form/form_base.html" %}
+{% extends "confirmation/confirmation_base.html" %}
 {% block content %}
 
 <div class="container">
@@ -16,7 +16,28 @@
 			</div> -->
 
 			<ul class="collapsible" data-collapsible="accordion">
+				{% for jobs in cart %}
 				<li>
+					<div class="collapsible-header"><i class="material-icons">assignment</i> Job: {{ loop.index }}
+					</div>
+
+					<div class="collapsible-body"><span> {{ jobs }} </span>
+						<div class="container center-align">
+							<div class="row">
+								<form>
+										<div class="input-field col s6 center">
+											<i class="material-icons prefix">attach_money</i>
+											<input name="{{ loop.index }}" id="icon_prefix" type="text" class="validate">
+											<label for="icon_prefix">Budget</label>
+										</div>
+								</form>
+							</div>
+						</div>
+					</div>
+
+				</li>
+				{% endfor %}
+				<!-- <li>
 					<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
 					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 				</li>
@@ -27,7 +48,7 @@
 				<li>
 					<div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
 					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				</li>
+				</li> -->
 			</ul>
 							<p class="center-align">All good? Specify your budget, hit submit and your job will be posted to Freelancer!</p>
 
@@ -41,6 +62,7 @@
 							</div>
 					</form>
 				</div>
+			</div>
 				<div class="row">
 				<button type="submit" class="btn btn-default center-align">Submit to Freelancer</button>
 				</div>
