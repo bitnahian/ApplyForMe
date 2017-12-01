@@ -1,4 +1,5 @@
 app/venv
+app/database.db
 **/__pycache__/*
 app/.vscode/*
 .DS_Store
