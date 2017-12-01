@@ -23,6 +23,7 @@ $(document).ready(function() {
 
 
 	$('form').on('submit', function(event) {
+		$('.progress').show();
 		$.getJSON('/process', {
 			keywords: $('#input').val(),
 			page: 1
@@ -52,6 +53,7 @@ $(document).ready(function() {
 				$('#result').html("<p> Sorry, no results found! Please try with different keywords. </p> ");
 			} else {
 				updatePage(data);
+				$('.progress').hide();
 				$('#page').html(page);
 			}
 		});
@@ -90,8 +92,11 @@ String.prototype.format = function () {
 
 var initialise = function intialise() {
 	$(".addToList").on("click", function(){
-		var name = $(this).attr('id');
+		var jsdata = $(this).attr('id');
 		$(this).text("Remove Job");
-		console.log(name);
+		$.get("/add_cart", {
+			cartvals: jsdata
+		});
+
 });
 }

@@ -7,6 +7,7 @@ from flask_wtf.csrf import CSRFProtect
 @app.route('/index')
 @app.route('/')
 def home():
+    session['cart'] = []
     return render_template('index/index.html')
 
 @app.route('/login', methods = ['POST', 'GET'])
@@ -37,14 +38,20 @@ def form():
     else:
         return redirect(url_for('handle_authorize'))
 
-@app.route('/add_cart/<int:dataID>', methods=['POST', 'GET'])
-def add_cart(dataID):
+@app.route('/add_cart', methods=['GET'])
+def get_cart():
+    cartVal = request.args.get('cartvals', 0, type=str) #Get job ID from Javascript
+    print(session['cart'])
+    session['cart'].append(cartVal)
+    print(session['cart'])
+    print()
+    #print("add_cart is operating: " + jsdata)
     if 'username' in session and session['username'] is not None:
-        session['username']['cart'].append(dataID)
-        print(session)
-        return render_template('form/form.html', session=session)
+        #session['logged in']['cart'].append(data)
+        #print(session)
+        return render_template('form/form.html')
 
-    else:
+    else: 
         return redirect(url_for('handle_authorize'))
 
 
@@ -112,7 +119,7 @@ def handle_redirect():
 
     if response['status'] == "success":
         username = response['result']['username']
-        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : [0], 'username' : username }
+        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : [], 'username' : username }
         return render_template('form/form.html')
 #    else:
 #        flash("Authorization unsuccessful. Please authorize with correct information.")
