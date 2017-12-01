@@ -8,7 +8,7 @@
         <!--Let browser know website is optimized for mobile-->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        
+
         {% block head %}
         <title>Search for jobs</title>
 
@@ -31,19 +31,18 @@
         <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"  media="screen,projection"/>
         <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"  media="screen,projection"/>
-        {% endblock %}        
+        {% endblock %}
     </head>
-    
+
     <body>
-    
+
     <main id="content">{% block content %}{% endblock %}</main>
-    
+
     {% block scripts %}
     <!--Import jQuery before materialize.js-->
     <script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-2.1.1.min.js') }}"></script>
     {% endblock %}
-    
+
     </body>
     </html>
-  
