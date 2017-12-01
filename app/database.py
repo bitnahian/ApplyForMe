@@ -9,5 +9,6 @@ try:
                 username VARCHAR
                 );''')
     print("Table successfully created")
+    conn.close()
 except:
     print("Failed to open database")
