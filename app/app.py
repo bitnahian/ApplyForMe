@@ -4,6 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 from flask_wtf.csrf import CSRFProtect
 
+
 @app.route('/index')
 @app.route('/')
 def home():
@@ -40,10 +41,10 @@ def form():
 
 @app.route('/add_cart', methods=['GET'])
 def get_cart():
-    cartVal = request.args.get('cartvals', 0, type=str) #Get job ID from Javascript
-    print(session['cart'])
-    session['cart'].append(cartVal)
-    print(session['cart'])
+    cartVal = request.args.get('cartvals', 0, type=str) #Get jobsb ID from Javascript
+    session['username']['cart'].append(cartVal)
+    session.modified = True
+    print(session['username']['cart'])
     print()
     #print("add_cart is operating: " + jsdata)
     if 'username' in session and session['username'] is not None:

@@ -52,7 +52,12 @@
   <!-- Modal Structure -->
   <div id="modal1" class="modal bottom-sheet">
     <div class="modal-content">
+    <ul>
       <h4>Your Added Jobs</h4>
+      {% for x in session['cart'] %}
+      <li>x</li>
+      {% endfor %}
+     </ul>
       <p>A bunch of text</p>
     </div>
     <div class="modal-footer">
