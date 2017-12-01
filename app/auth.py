@@ -11,9 +11,9 @@ app.secret_key = SECRET_KEY
 csrf = CSRFProtect(app)
 
 oauth_uri = 'https://accounts.freelancer.com/oauth/authorise'
-client_id = 'b0ecd00f-96a4-4391-b260-ce9e86fabbfd' # Need to set this up
-client_secret = '79912b13183f232f8be46ed0a5ed4fdcb7d7ac7c1ea6adf5ff95f1efe97524ed791c6c5132edade7bcbeb4b47a1b09297e01dad3b4ecd29cdb123b8eda52bfdb' # Need to set this up too
-redirect_uri = '/redirect_endpoint'
+client_id = 'e424e640-07df-46f1-b7dd-4fb6169645d5'
+client_secret = '787688150ca8b033b881d715280eb06c2daffc5d3e692459ca19539351a5f89bff4a45b43aaadf58f8c91003eb989c9badb10cf6571c39e76f7709f9952653cc'
+redirect_uri = 'https://localhost:5000/redirect_endpoint'
 prompt = 'select_account consent'
 advanced_scopes = '1 2 3 4 5 6'
 

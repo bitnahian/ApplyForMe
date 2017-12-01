@@ -4,10 +4,17 @@ $(document).ready(function() {
 			html += '<ul class="collapsible" data-collapsible="accordion">'
 
 			for(var i = 0; i < data.title.length; ++i){
-			 		 html += '<li><div class="collapsible-header"> <strong>{1}</strong>  </div> <div class="collapsible-body"> <span class="browser-default"> <h2 class="center-align"><a href = "{0}"> {3} </p> </a></h2> {2}<br> <p class="center-align"><a class="waves_effect waves_light btn center-align" href="https://authenticjobs.com/jobs/{4}"> <i class="material-icons left">add_circle</i>Add to List</a></p> </span> </div>  </li>'.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
+					 var str = '<li><div class="collapsible-header"> <strong>{1}</strong>  ' +
+					 					 '</div> <div class="collapsible-body"> <span class="browser-default"> ' +
+										 '<h2 class="center-align"><a href = "{0}"> {3} </p> </a></h2> {2}<br> ' +
+										 '<p class="center-align"><a name="addToList" class="waves_effect waves_light btn center-align" ' +
+										 'href="https://authenticjobs.com/jobs/{4}"> <i class="material-icons left">add_circle</i> ' +
+										 ' Add to List</a></p> </span> </div> </li>';
+
+			 		 html += str.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
 			}
 			html += '</ul>'
-			
+
 			$('#result').html(html);
 			$('.collapsible').collapsible();
 

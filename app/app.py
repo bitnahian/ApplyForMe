@@ -32,12 +32,16 @@ def logout():
 
 @app.route('/form')
 def form():
-    return render_template('form/form.html')
+    if 'logged in' in session:
+        return render_template('form/form.html')
+    else:
+        return redirect(url_for('handle_authorize'))
+
 
 @app.route('/confirmation')
 def confirmation():
     return render_template('confirmation/confirmation.html')
-    
+
 @app.route('/process')
 def process():
     # Construct API params
@@ -88,7 +92,12 @@ def handle_authorize():
 # The endpoint waiting to receive the authorisation grant code
 @app.route('/redirect_endpoint')
 def handle_redirect():
-    authorisation_code = request.args['code']
+    if 'code' in request.args == True:
+        authorisation_code = request.args['code']
+        session['logged in'] = { 'auth' : authorisation_code , 'cart' : [0] }
+        render_template('form/form.html')
+    flash("Authorization unsuccessful. Please authorize with correct information.")
+    return redirect(url_for('handle_authorize'))
 
 
 @app.route('/about')
