@@ -4,6 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 from flask_wtf.csrf import CSRFProtect
 
+
 @app.route('/index')
 @app.route('/')
 def home():
@@ -40,15 +41,46 @@ def form():
     else:
         return redirect(url_for('handle_authorize'))
 
-@app.route('/add_cart/<int:dataID>', methods=['POST', 'GET'])
-def add_cart(dataID):
-    if 'username' in session and session['username'] is not None:
-        session['username']['cart'].append(dataID)
-        print(session)
-        return render_template('form/form.html', session=session)
+@app.route('/add_cart', methods=['GET'])
+def get_cart():
+    cartID = request.args.get('cartID', 0, type=str) #Get jobsb ID from Javascript
+    title = request.args.get('title', 0, type=str) #Get jobsb ID from Javascript
+    description = request.args.get('description', 0, type=str) #Get jobsb ID from Javascript
 
-    else:
-        return redirect(url_for('handle_authorize'))
+    if cartID != -100: #Add new cart item
+        session['username']['cart']['id'].append(cartID)
+        session['username']['cart']['title'].append(title)
+        session['username']['cart']['description'].append(description)
+        session.modified = True
+
+    counter = 0
+   
+    response = {'title' : [], 'description' : []}
+
+    for x in session['username']['cart']['title']:
+        response['title'].append(x)
+        response['description'].append(session['username']['cart']['description'][counter])
+        counter+=1
+    return jsonify(response)
+
+@app.route('/remove_cart', methods=['GET'])
+def remove_cart():
+    cartID = request.args.get('cartID', 0, type=str) #Get jobsb ID from Javascript
+    # for x in range (0, session['username'].length):
+    #     if (session['username']['cart']['id'] == cartID):
+    #         #remove 
+
+    session['username']['cart']['title'].append(title)
+    session['username']['cart']['description'].append(description)
+    session.modified = True
+
+    counter = 0
+    response = {'title' : [], 'description' : []} #TODO add link
+    for x in session['username']['cart']['title']:
+        response['title'].append(x)
+        response['description'].append(session['username']['cart']['description'][counter])
+        counter+=1
+    return jsonify(response)
 
 
 @app.route('/confirmation')
@@ -116,7 +148,7 @@ def handle_redirect():
 
     if response['status'] == "success":
         username = response['result']['username']
-        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : [0], 'username' : username }
+        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : {'id': [], 'title': [], 'description': []} , 'username' : username }
         return render_template('form/form.html')
     else:
         flash("Authorization unsuccessful. Please authorize with correct information.")
