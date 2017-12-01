@@ -37,6 +37,16 @@ def form():
     else:
         return redirect(url_for('handle_authorize'))
 
+@app.route('/add_cart/<int:dataID>', methods=['POST', 'GET'])
+def add_cart(dataID):
+    if 'logged in' in session:
+        session['logged in']['cart'].append(dataID)
+        print(session)
+        return render_template('form/form.html', session=session)
+
+    else: 
+        return redirect(url_for('handle_authorize'))
+
 
 @app.route('/confirmation')
 def confirmation():

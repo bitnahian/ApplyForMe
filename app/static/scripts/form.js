@@ -7,8 +7,8 @@ $(document).ready(function() {
 					 var str = '<li><div class="collapsible-header"> <strong>{1}</strong>  ' +
 					 					 '</div> <div class="collapsible-body"> <span class="browser-default"> ' +
 										 '<h2 class="center-align"><a href = "{0}"> {3} </p> </a></h2> {2}<br> ' +
-										 '<p class="center-align"><a name="addToList" class="waves_effect waves_light btn center-align" ' +
-										 'href="https://authenticjobs.com/jobs/{4}"> <i class="material-icons left">add_circle</i> ' +
+										 '<p class="center-align"><a class="addToList" class="waves_effect waves_light btn center-align" ' +
+										 '<i class="material-icons left">add_circle</i> ' +
 										 ' Add to List</a></p> </span> </div> </li>';
 
 			 		 html += str.format(data.url[i], data.title[i], data.description[i], data.name[i], data.id[i]);
@@ -19,6 +19,10 @@ $(document).ready(function() {
 			$('.collapsible').collapsible();
 
 		}
+
+		$('addToList').on('click', function() {
+			console.log("test")
+		});
 
 		$('form').on('submit', function(event) {
     $.getJSON('/process', {
