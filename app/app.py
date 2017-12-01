@@ -4,6 +4,7 @@ import requests
 import xml.etree.ElementTree as ET
 from flask_wtf.csrf import CSRFProtect
 
+@app.route('/index')
 @app.route('/')
 def home():
     return render_template('index/index.html')
@@ -33,6 +34,10 @@ def logout():
 def form():
     return render_template('form/form.html')
 
+@app.route('/confirmation')
+def confirmation():
+    return render_template('confirmation/confirmation.html')
+    
 @app.route('/process')
 def process():
     # Construct API params
