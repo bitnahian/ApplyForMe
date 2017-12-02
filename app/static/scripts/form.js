@@ -1,5 +1,19 @@
+
 $(document).ready(function() {
-	//getCurrentSessionCart();
+	var GetCurrCart = function() {
+		console.log("getting current session")
+		id = -100
+		title = "if this shows up, something went wrong :))"
+		descr = ""
+		$.getJSON("/add_cart", {
+			cartID: id,
+			title: title,
+			description: descr
+		}, function(response) {
+			updateCart(response);
+		});
+	}
+	GetCurrCart();
 	var updatePage = function(data) {
 		var html = ''
 		html += '<ul class="collapsible" data-collapsible="accordion">'
@@ -107,13 +121,15 @@ var initialise = function intialise(data) {
 		}, function(response) {
 			updateCart(response);
 		})
-});
+	});
 }
 
 var updateCart = function(data) {
-		var html = ''
+	var html = ''
+	if (data.title.length == 0) {
+		html += '<p class="center-align">No jobs have been added yet. Find a job from above. </p>'
+	} else {
 		html += '<ul class="collapsible" data-collapsible="accordion">'
-
 		for(var i = 0; i < data.title.length; ++i){
 			var str = '<li><div class="collapsible-header"> <strong>{0}</strong>  ' +
 			'</div> <div class="collapsible-body"> <span class="browser-default"> {1}' +
@@ -122,13 +138,14 @@ var updateCart = function(data) {
 			html += str.format(data.title[i], data.description[i], i);
 		}
 		html += '</ul>'
-		$('#result2').html(html);
-		$('.collapsible').collapsible();
+	}
+	$('#result2').html(html);
+	$('.collapsible').collapsible();
 
-		denitialise(data);
- 	}
+	denitialise(data);
+}
 
- var denitialise = function intialise(data) {
+var denitialise = function intialise(data) {
 	$(".removeFromList").on("click", function(){
 		var jsdata = $(this).attr('id');
 		var index = jsdata.split("-");
@@ -140,17 +157,7 @@ var updateCart = function(data) {
 		}, function(response) {
 			updateCart(response);
 		})
-});
+	});
 }
 
 
-// var currCart = function getCurrentSessionCart(data) {
-// 	console.log("getting current session")
-// 	$.getJSON("/get_cart", {
-// 			cartID: id,
-// 			title: title,
-// 			description: descr
-// 		}, function(response) {
-// 			updateCart(response);
-// 		})
-// 	};
