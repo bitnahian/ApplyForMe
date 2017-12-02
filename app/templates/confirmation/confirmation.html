@@ -16,12 +16,12 @@
 			</div> -->
 
 			<ul class="collapsible" data-collapsible="accordion" id = "length" value = "{{cart|length}}">
-				{% for jobs in cart %}
+				{% for jobs in session.username.cart.title %}
 				<li>
 					<div class="collapsible-header"><i class="material-icons">assignment</i> Job: {{ loop.index }}
 					</div>
 
-					<div class="collapsible-body"><span> {{ jobs }} </span>
+					<div class="collapsible-body"><span> {{ jobs }}  </span>
 						<div class="container center-align">
 							<div class="row">
 								<form>
@@ -34,7 +34,6 @@
 							</div>
 						</div>
 					</div>
-
 				</li>
 				{% endfor %}
 				<!-- <li>

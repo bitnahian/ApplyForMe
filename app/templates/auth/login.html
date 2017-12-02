@@ -6,7 +6,7 @@
 
         <div class="container center-align give-margin">
 
-            <h5 class="indigo-text">Connect to your Freelancer Account</h5>
+            <h5 class="indigo-text">Create your own job!</h5>
 
             <div class="custom-box z-depth-1 grey lighten-4 row left-align">
             {% for message in form.title.errors %}
@@ -33,6 +33,11 @@
                           {{ form.link.label(class_="active") }}
                           {{ form.link( id="link", type="text", class_="validate") }}
                         </div>
+                        <div class='input-field col s12'>
+                          {{ form.budget.label(class_="active") }}
+                          {{ form.budget (id="budget", type="text", class_="validate") }}
+                        </div>
+
                     </div>
 
                     <!-- <div class='row'>

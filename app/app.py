@@ -22,8 +22,28 @@ def login():
                 title = request.form['title']
                 description = request.form['description']
                 link = request.form['link']
-                #add to cart HERE asldkjasldasdjlk
-                return redirect('confirmation/confirmation.html')
+                budget = request.form['budget']
+                job_ids = get_job_id()
+                url = "https://www.freelancer-sandbox.com/api/projects/0.1/projects/"
+                oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+                data = {
+                "title": title,
+                "description": description + "Application Link: " + link,
+                "currency": {
+                    "code": "AUD",
+                    "id": 3,
+                    "sign": "$"
+                    },
+                "budget": {
+                        "minimum": budget
+                    },
+                "jobs": job_ids
+                }
+                resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
+                response = json.loads(resp.text)
+                print(jsonify(response))
+
+                return render_template('index/index.html')
         elif request.method == 'GET':
             return render_template('auth/login.html', form=form)
     else:
@@ -32,7 +52,7 @@ def login():
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return render_template('index/index.html')
+    return redirect(url_for('home'))
 
 @app.route('/form')
 def form():
@@ -47,6 +67,7 @@ def get_cart():
     title = request.args.get('title', 0, type=str) #Get jobsb ID from Javascript
     description = request.args.get('description', 0, type=str) #Get jobsb ID from Javascript
 
+    print(title)
     if cartID != -100: #Add new cart item
         session['username']['cart']['id'].append(cartID)
         session['username']['cart']['title'].append(title)
@@ -54,7 +75,7 @@ def get_cart():
         session.modified = True
 
     counter = 0
-   
+
     response = {'title' : [], 'description' : []}
 
     for x in session['username']['cart']['title']:
@@ -68,7 +89,7 @@ def remove_cart():
     cartID = request.args.get('cartID', 0, type=str) #Get jobsb ID from Javascript
     # for x in range (0, session['username'].length):
     #     if (session['username']['cart']['id'] == cartID):
-    #         #remove 
+    #         #remove
 
     session['username']['cart']['title'].append(title)
     session['username']['cart']['description'].append(description)
@@ -85,9 +106,7 @@ def remove_cart():
 
 @app.route('/confirmation')
 def confirmation():
-    cart = [ 'Fix my PHP website.', 'B', 'C' ]
-    job_ids = get_job_id()
-    return render_template('confirmation/confirmation.html', cart = cart )
+    return render_template('confirmation/confirmation.html' )
 
 @app.route('/process')
 def process():
@@ -174,6 +193,11 @@ def submit_jobs():
         if budgets[i] == -1:
             continue
         # Else do the API call
+        title = session['username']['cart']['title'][i]
+        description = session['username']['cart']['description'][i]
+        id = session['username']['cart']['cartID'][i]
+
+        description += "   Apply Here: https://authenticjobs.com/jobs/" + id
         data = {
         "title": titles[i],
         "description": descriptions[i],
@@ -190,6 +214,9 @@ def submit_jobs():
         resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
         response = json.loads(resp.text)
         print(jsonify(response))
+        session['username']['cart']['title'] = []
+        session['username']['cart']['cart'] = []
+        session['username']['cart']['description'] = []
 
     # REMEMBER TO POP CART SESSION
     return json.dumps({"status" : "success", "message":"Application was successful."})

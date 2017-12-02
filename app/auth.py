@@ -1,5 +1,5 @@
 from flask_wtf import Form, FlaskForm
-from wtforms import validators, StringField, PasswordField, TextField
+from wtforms import validators, StringField, PasswordField, TextField, DateField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import Email, InputRequired
 from flask import Flask, session, redirect, url_for, escape, request
@@ -23,3 +23,4 @@ class LoginForm(FlaskForm):
     title = TextField('Title', validators=[InputRequired('Title Required'), validators.Length(min=5, max=50)])
     description = TextField('Description', validators=[InputRequired('Description Required'), validators.Length(min=5, max=80)])
     link = TextField('Link', validators=[InputRequired('Link for Application Portal'), validators.Length(min=3, max=150)])
+    budget = TextField('Minimum Budget', validators=[InputRequired('Minimum Budget is required'), validators.Length(min=1)])
