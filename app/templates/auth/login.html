@@ -6,26 +6,41 @@
 
         <div class="container center-align give-margin">
 
-            <h5 class="indigo-text">Connect to your Freelancer Account</h5>
+            <h5 class="indigo-text">Create your own job!</h5>
 
             <div class="custom-box z-depth-1 grey lighten-4 row left-align">
-            {% for message in form.email.errors %}
+            {% for message in form.title.errors %}
             <div>{{ message }}</div>
             {% endfor %}
-            {% for message in form.password.errors %}
+            {% for message in form.description.errors %}
+            <div>{{ message }}</div>
+            {% endfor %}
+            {% for message in form.link.errors %}
             <div>{{ message }}</div>
             {% endfor %}
                 <form class="col s12" method="post" action="{{ url_for('login') }}" role="form">
                 {{ form.hidden_tag() }}
                     <div class='row'>
                         <div class='input-field col s12'>
-                          {{ form.email.label(class_="active") }}
-                          {{ form.email(placeholder= "email", id="username", type="text", class_="validate") }}
-                          <input >
-                      </div>
+                          {{ form.title.label(class_="active") }}
+                          {{ form.title( id="title", type="text", class_="validate") }}
+                        </div>
+                        <div class='input-field col s12'>
+                          {{ form.description.label(class_="active") }}
+                          {{ form.description( id="description", type="text", class_="validate") }}
+                        </div>
+                        <div class='input-field col s12'>
+                          {{ form.link.label(class_="active") }}
+                          {{ form.link( id="link", type="text", class_="validate") }}
+                        </div>
+                        <div class='input-field col s12'>
+                          {{ form.budget.label(class_="active") }}
+                          {{ form.budget (id="budget", type="text", class_="validate") }}
+                        </div>
+
                     </div>
 
-                    <div class='row'>
+                    <!-- <div class='row'>
                         <div class='input-field col s12'>
                         <input placeholder="Password" id="pass" type="password" class="validate">
 
@@ -33,7 +48,7 @@
                         <label style='float: right;'>
         				    <a class='pink-text' href='#!'><b>Forgot Password?</b></a>
         				</label>
-                    </div>
+                    </div> -->
 
                   <br />
 

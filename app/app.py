@@ -12,24 +12,47 @@ def home():
 
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
-    form = LoginForm(request.form)
-    if request.method == 'POST':
-        if form.validate() == False:
-            flash('All fields are required.')
+    if 'username' in session and session['username'] is not None:
+        form = LoginForm(request.form)
+        if request.method == 'POST':
+            if form.validate() == False:
+                flash('All fields are required.')
+                return render_template('auth/login.html', form=form)
+            else:
+                title = request.form['title']
+                description = request.form['description']
+                link = request.form['link']
+                budget = request.form['budget']
+                job_ids = get_job_id()
+                url = "https://www.freelancer-sandbox.com/api/projects/0.1/projects/"
+                oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+                data = {
+                "title": title,
+                "description": description + "Application Link: " + link,
+                "currency": {
+                    "code": "AUD",
+                    "id": 3,
+                    "sign": "$"
+                    },
+                "budget": {
+                        "minimum": budget
+                    },
+                "jobs": job_ids
+                }
+                resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
+                response = json.loads(resp.text)
+                print(jsonify(response))
+
+                return render_template('index/index.html')
+        elif request.method == 'GET':
             return render_template('auth/login.html', form=form)
-        else:
-            email = request.form['email']
-            password = request.form
-            session['username'] = { 'email' : email , 'cart' : [0] }
-            print(email)
-            return redirect('form/form.html')
-    elif request.method == 'GET':
-        return render_template('auth/login.html', form=form)
+    else:
+        return redirect(url_for('handle_authorize'))
 
 @app.route('/logout')
 def logout():
     session.pop('username', None)
-    return render_template('index/index.html')
+    return redirect(url_for('home'))
 
 @app.route('/form')
 def form():
@@ -44,14 +67,16 @@ def get_cart():
     title = request.args.get('title', 0, type=str) #Get jobsb ID from Javascript
     description = request.args.get('description', 0, type=str) #Get jobsb ID from Javascript
 
+
     if int(cartID) != -100: #Add new cart item
+
         session['username']['cart']['id'].append(cartID)
         session['username']['cart']['title'].append(title)
         session['username']['cart']['description'].append(description)
         session.modified = True
 
     counter = 0
-   
+
     response = {'title' : [], 'description' : []}
 
     for x in session['username']['cart']['title']:
@@ -65,7 +90,7 @@ def remove_cart():
     cartID = request.args.get('cartID', 0, type=str) #Get jobsb ID from Javascript
     # for x in range (0, session['username'].length):
     #     if (session['username']['cart']['id'] == cartID):
-    #         #remove 
+    #         #remove
 
     session['username']['cart']['title'].append(title)
     session['username']['cart']['description'].append(description)
@@ -82,8 +107,7 @@ def remove_cart():
 
 @app.route('/confirmation')
 def confirmation():
-    cart = [ 'A', 'B', 'C' ]
-    return render_template('confirmation/confirmation.html', cart = cart )
+    return render_template('confirmation/confirmation.html' )
 
 @app.route('/process')
 def process():
@@ -146,14 +170,70 @@ def handle_redirect():
         username = response['result']['username']
         session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : {'id': [], 'title': [], 'description': []} , 'username' : username }
         return render_template('form/form.html')
-#    else:
-#        flash("Authorization unsuccessful. Please authorize with correct information.")
-#        return redirect(url_for('handle_authorize'))
-
+    else:
+        flash("Authorization unsuccessful. Please authorize with correct information.")
+        return redirect(url_for('handle_authorize'))
 
 @app.route('/about')
 def about():
     return render_template('about/about.html')
 
+@app.route('/submit_jobs')
+def submit_jobs():
+    # Get the params
+    titles = ["Fix Nahian 1", "Fix Shenin 2", "Fix Ali 3"]
+    descriptions = ["test pls", "test pls", "test pls"]
+    job_ids = get_job_id()
+    budgets = json.loads(request.args.get('budgets'))
+    print(budgets)
+    url = "https://www.freelancer-sandbox.com/api/projects/0.1/projects/"
+    oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+
+    budget_len = len(budgets)
+    for i in range (0, budget_len):
+        if budgets[i] == -1:
+            continue
+        # Else do the API call
+        title = session['username']['cart']['title'][i]
+        description = session['username']['cart']['description'][i]
+        id = session['username']['cart']['cartID'][i]
+
+        description += "   Apply Here: https://authenticjobs.com/jobs/" + id
+        data = {
+        "title": titles[i],
+        "description": descriptions[i],
+        "currency": {
+            "code": "AUD",
+            "id": 3,
+            "sign": "$"
+            },
+        "budget": {
+                "minimum": budgets[i]
+            },
+        "jobs": job_ids
+        }
+        resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
+        response = json.loads(resp.text)
+        print(jsonify(response))
+        session['username']['cart']['title'] = []
+        session['username']['cart']['cart'] = []
+        session['username']['cart']['description'] = []
+
+    # REMEMBER TO POP CART SESSION
+    return json.dumps({"status" : "success", "message":"Application was successful."})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+def get_job_id():
+    url = "https://www.freelancer-sandbox.com/api/projects/0.1/jobs"
+    oauth_headers = {"freelancer-oauth-V1": "k00e8P5saxuzfkoHcJOcMhT0pJcgt9",  "Content-Type" : "application/json"}
+    job_names = ["resumes" , "communications", "writing", "proofreading", "speechwriting"]
+    payload = {"job_names[]" : job_names}
+    resp = requests.get(url, headers=oauth_headers, params=payload)
+    response = json.loads(resp.text)
+    job_ids = []
+    for item in response['result']:
+        job_ids.append({'id' : item['id']})
+    return job_ids
