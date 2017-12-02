@@ -217,6 +217,7 @@ def submit_jobs():
         session['username']['cart']['title'] = []
         session['username']['cart']['cart'] = []
         session['username']['cart']['description'] = []
+        session.modified = True
 
     # REMEMBER TO POP CART SESSION
     return json.dumps({"status" : "success", "message":"Application was successful."})
