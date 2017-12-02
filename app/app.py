@@ -67,8 +67,9 @@ def get_cart():
     title = request.args.get('title', 0, type=str) #Get jobsb ID from Javascript
     description = request.args.get('description', 0, type=str) #Get jobsb ID from Javascript
 
-    print(title)
-    if cartID != -100: #Add new cart item
+
+    if int(cartID) != -100: #Add new cart item
+
         session['username']['cart']['id'].append(cartID)
         session['username']['cart']['title'].append(title)
         session['username']['cart']['description'].append(description)
