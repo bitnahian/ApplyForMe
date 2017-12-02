@@ -34,9 +34,6 @@ $(document).ready(function() {
 
 	}
 
-
-
-
 	$('form').on('submit', function(event) {
 		$('.progress').show();
 		$.getJSON('/process', { //This gets the JSON returned from the process function, by sending keywords and page parameter
@@ -159,5 +156,3 @@ var denitialise = function intialise(data) {
 		})
 	});
 }
-
-

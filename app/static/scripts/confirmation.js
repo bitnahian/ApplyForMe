@@ -28,7 +28,7 @@ $(document).ready(function() {
   		$.getJSON('/submit_jobs', {
         budgets : JSON.stringify(budget)
   		}, function(data) {
-        alert("Status: " + data.status + " Message: " + data.message);
+        alert("Success");
         window.location.href = $SCRIPT_ROOT;
   		});
   		return false;

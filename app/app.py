@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Markup, request, jsonify, flash, redirect, url_for, json
+from flask import Flask, render_template, Markup, request, jsonify, flash, redirect, url_for, json, make_response
 from auth import *
 import requests
 import xml.etree.ElementTree as ET
@@ -70,18 +70,18 @@ def get_cart():
 
     if int(cartID) != -100: #Add new cart item
 
-        session['username']['cart']['id'].append(cartID)
-        session['username']['cart']['title'].append(title)
-        session['username']['cart']['description'].append(description)
+        session['cart']['id'].append(cartID)
+        session['cart']['title'].append(title)
+        session['cart']['description'].append(description)
         session.modified = True
 
     counter = 0
 
     response = {'title' : [], 'description' : []}
 
-    for x in session['username']['cart']['title']:
+    for x in session['cart']['title']:
         response['title'].append(x)
-        response['description'].append(session['username']['cart']['description'][counter])
+        response['description'].append(session['cart']['description'][counter])
         counter+=1
     return jsonify(response)
 
@@ -92,15 +92,15 @@ def remove_cart():
     #     if (session['username']['cart']['id'] == cartID):
     #         #remove
 
-    session['username']['cart']['title'].append(title)
-    session['username']['cart']['description'].append(description)
+    session['cart']['title'].append(title)
+    session['cart']['description'].append(description)
     session.modified = True
 
     counter = 0
     response = {'title' : [], 'description' : []} #TODO add link
-    for x in session['username']['cart']['title']:
+    for x in session['cart']['title']:
         response['title'].append(x)
-        response['description'].append(session['username']['cart']['description'][counter])
+        response['description'].append(session['cart']['description'][counter])
         counter+=1
     return jsonify(response)
 
@@ -168,7 +168,8 @@ def handle_redirect():
 
     if response['status'] == "success":
         username = response['result']['username']
-        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'cart' : {'id': [], 'title': [], 'description': []} , 'username' : username }
+        session['username'] = { 'auth' : "k00e8P5saxuzfkoHcJOcMhT0pJcgt9" , 'username' : username }
+        session['cart'] = {'id': [], 'title': [], 'description': []}
         return render_template('form/form.html')
     else:
         flash("Authorization unsuccessful. Please authorize with correct information.")
@@ -194,9 +195,9 @@ def submit_jobs():
         if budgets[i] == -1:
             continue
         # Else do the API call
-        title = session['username']['cart']['title'][i]
-        description = session['username']['cart']['description'][i]
-        id = session['username']['cart']['cartID'][i]
+        title = session['cart']['title'][i]
+        description = session['cart']['description'][i]
+        id = session['cart']['cartID'][i]
 
         description += "   Apply Here: https://authenticjobs.com/jobs/" + id
         data = {
@@ -215,14 +216,12 @@ def submit_jobs():
         resp = requests.post(url, headers=oauth_headers, data=json.dumps(data))
         response = json.loads(resp.text)
         print(jsonify(response))
-        session['username']['cart']['title'] = []
-        session['username']['cart']['cart'] = []
-        session['username']['cart']['description'] = []
-        session.modified = True
 
     # REMEMBER TO POP CART SESSION
-    return json.dumps({"status" : "success", "message":"Application was successful."})
-
+    data = json.dumps({"status" : "success", "message":"Application was successful."})
+    session.pop('user', None)
+    session.pop('cart', None)
+    return data
 
 if __name__ == '__main__':
     app.run(debug=True)
