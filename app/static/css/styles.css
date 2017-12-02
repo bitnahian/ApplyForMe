@@ -96,17 +96,35 @@
 
 #professional-div {
     
+  display: block;
     text-align: center;
    background-image: url(../images/professionals.jpg);
    background-repeat: no-repeat;
     background-clip: rect(0px,60px,200px,0px);
 
-    height: 70vh;
+    height: 380px;
     width:100%;
     float:left;
     animation-name: fadeIn;
     animation-duration: 4s;
 }
+
+#stats-div {
+  
+  display: block;
+  text-align: center;
+  background-color: deepskyblue;
+ background-repeat: no-repeat;
+  background-clip: rect(0px,60px,200px,0px);
+
+  height: 380px;
+  width:100%;
+  float:left;
+  animation-name: fadeIn;
+  animation-duration: 4s;
+}
+
+
 .header{
   position:relative;
   text-align:center;
