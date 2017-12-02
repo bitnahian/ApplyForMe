@@ -85,6 +85,7 @@ def get_cart():
         counter+=1
     return jsonify(response)
 
+
 @app.route('/remove_cart', methods=['GET'])
 def remove_cart():
     cartID = request.args.get('cartID', 0, type=str) #Get jobsb ID from Javascript
