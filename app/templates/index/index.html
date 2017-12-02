@@ -2,18 +2,30 @@
 {% block title %}Admin Dashboard{% endblock %}
 
 {% block content %}
-<div id="hello-div" class ="z-depth-5">
-
+	<div id="hello-div" class ="z-depth-5">
 	<div class="header"> Welcome to ApplyForMe</div>
 	<div class="caption">A journey starts with a single step.</div>
 	<a class="next-buttonwaves-effect waves-light btn" href="{{url_for('form')}}">Find your jobs</a>
-
 	</div>
+	
 	<div id="professional-div">
 	<div class="header black-text">Find experienced professionals</div>
 	<div class="caption black-text">Let others get your dream job for you.</div>
-	<a class="next-buttonwaves-effect waves-light btn" href="{{url_for('login')}}">Make your jobs</a>
-
+	<a class="next-buttonwaves-effect waves-light btn" href="{{url_for('form')}}">Choose your jobs</a>
 	</div>
 
-	{% endblock %}
+	<div id="stats-div">
+	<div class="header">Stats Don't Lie</div>
+	<p>These are some stats we've collected over the years.</p>
+	 <div class="container">
+		 <div class="row">
+				<img src= "..\static\images\Data 1.png" style="float:center;width:200px;height:175px">			
+				<img src= "..\static\images\Data2.png" style="float:center;width:200px;height:175px">
+					
+			 </div>
+
+		 </div>
+	 </div>
+	</div>
+  
+{% endblock %}
