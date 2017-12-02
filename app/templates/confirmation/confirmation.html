@@ -5,7 +5,7 @@
 
 	<br><br><br><br>
 
-	<div class ="z-depth-1 row">
+	<div class ="z-depth-1 row center-align">
 		<div class="row">
 
 		</div>
@@ -13,60 +13,48 @@
 			<h4 class="sr-only center-align" for="keywords">View your selected jobs here</h4>
 			<!-- <div class="job-list">
 
-			</div> -->
+		</div> -->
 
-			<ul class="collapsible" data-collapsible="accordion" id = "length" value = "{{cart|length}}">
+		<ul class="collapsible" data-collapsible="accordion" id = "length" value = "{{cart|length}}">
+			{% for jobs in session.cart.title %}
+			<li>
+				<div class="collapsible-header left-align"><i class="material-icons">assignment</i> Job: {{ jobs }}
+				</div>
 
-				{% for jobs in session.cart.title %}
-				<li>
-					<div class="collapsible-header"><i class="material-icons">assignment</i> Job: {{ loop.index }}
-					</div>
-
-					<div class="collapsible-body"><span> {{ jobs }}  </span>
-						<div class="container center-align">
-							<div class="row">
-								<form>
-										<div class="input-field col s6 center">
-											<i class="material-icons prefix">attach_money</i>
-											<input name="{{ loop.index }}" id="icon_prefix" type="text" class="validate">
-											<label for="icon_prefix">Budget</label>
-										</div>
-								</form>
-							</div>
+				<div class="collapsible-body"><span> 
+						<div class="row">
+							<form>
+								<div class="input-field col s3 center">
+									<i class="material-icons prefix">attach_money</i>
+									<input name="{{ loop.index }}" id="icon_prefix" type="text" class="validate">
+									<label for="icon_prefix">Budget</label>
+								</div>
+							</form>
 						</div>
-					</div>
-				</li>
-				{% endfor %}
-				<!-- <li>
-					<div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				</li>
-				<li>
-					<div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				</li>
-				<li>
-					<div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-					<div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-				</li> -->
+						</span>
+				</div>
+			</li>
+			{% endfor %}
 			</ul>
-
-			<button type="submit" class="btn btn-default left-align" id="keno">Calculate</button>
-			<p class="center-align">All good? Specify your budget, hit submit and your job will be posted to Freelancer!</p>
+			<br>
+			<button type="submit" class="btn btn-default center-align" id="keno">Calculate</button>
+			<br> <br> <br>
+			<br>
 
 			<div id='output'>
 			</div>
+<div class="row">
+			<button id = "submit" type="submit" class="btn btn-default center-align">Submit to Freelancer</button>
+			<br> <br> <br> 
+			<p class="center-align">All good? Specify your budget, hit submit and your job will be posted to Freelancer!</p>
 
-			</div>
-				<div class="row">
-				<button id = "submit" type="submit" class="btn btn-default right-align">Submit to Freelancer</button>
-				</div>
-				</div>
-			<br>
-			<br>
 		</div>
 
+		</div>
+		
+		<br>
+		<br>
 	</div>
-</div>
+
 </div>
 {% endblock %}
